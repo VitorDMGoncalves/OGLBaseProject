@@ -1,0 +1,125 @@
+public static Model loadbinaryObj(String name, Context ctx) throws IOException
+	{
+		
+		//model dimensions
+		float toppoint = 0;      // y+
+		float bottompoint = 0;   // y-
+		float leftpoint = 0;     // x-
+		float rightpoint = 0;    // x+
+		float farpoint = 0;      // z-
+		float nearpoint = 0;     // z+
+		boolean hasTexture = false;
+		boolean hasNormals = false;
+		
+		
+		//base texture file
+		String baseTexture = "";
+		//input stream for the file
+		InputStream in = ctx.getAssets().open(name); //Model file
+		
+		//reads header
+		int headerbbSize = 4 * 3;
+		ByteBuffer headerbb = ByteBuffer.allocateDirect(headerbbSize);
+		headerbb.order(ByteOrder.nativeOrder());
+		
+		byte[] bytes = new byte[headerbbSize];
+		in.read(bytes);
+		
+		headerbb.put(bytes);
+		headerbb.position(0);
+		
+		int vertCount = 0;
+		int normCount = 0;
+		int tcCount = 0;
+		
+		vertCount = headerbb.getInt();
+		normCount = headerbb.getInt();
+		tcCount = headerbb.getInt();
+		
+		if(normCount>0) hasNormals = true;
+		if(tcCount>0) hasTexture = true;
+		
+		
+		//reads vertices
+		int vertbbSize = 4 * 3 * vertCount;
+		ByteBuffer vertbb = ByteBuffer.allocateDirect(vertbbSize);
+		vertbb.order(ByteOrder.nativeOrder());
+		
+		bytes = new byte[vertbbSize];
+		in.read(bytes);
+		
+		vertbb.put(bytes);
+		vertbb.position(0);
+		
+		ArrayList<Vertex3D> vertArray = new ArrayList<Vertex3D>();
+		for (int i = 0; i< vertCount; i++)
+		{
+			Vertex3D v = new Vertex3D(vertbb.getFloat(), vertbb.getFloat(), vertbb.getFloat());
+			vertArray.add(v);
+		}
+		
+		//reads normals
+		int normalbbSize = 4 * 3 * normCount;
+		ByteBuffer normbb = ByteBuffer.allocateDirect(normalbbSize);
+		normbb.order(ByteOrder.nativeOrder());
+		
+		bytes = new byte[normalbbSize];
+		in.read(bytes);
+		
+		normbb.put(bytes);
+		normbb.position(0);
+		
+		ArrayList<Vertex3D> normalArray = new ArrayList<Vertex3D>();
+		for (int i = 0; i< normCount; i++)
+		{
+			Vertex3D v = new Vertex3D(normbb.getFloat(), normbb.getFloat(), normbb.getFloat());
+			normalArray.add(v);
+		}
+		
+		//reads textcoods
+		int tcbbSize = 4 * 2 * tcCount;
+		ByteBuffer tcbb = ByteBuffer.allocateDirect(tcbbSize);
+		tcbb.order(ByteOrder.nativeOrder());
+		
+		bytes = new byte[tcbbSize];
+		in.read(bytes);
+		
+		tcbb.put(bytes);
+		tcbb.position(0);
+		
+		ArrayList<Vertex2D> tcArray = new ArrayList<Vertex2D>();
+		for (int i = 0; i< tcCount; i++)
+		{
+			Vertex2D v = new Vertex2D(tcbb.getFloat(), tcbb.getFloat());
+			tcArray.add(v);
+		}
+		
+		
+		//Model Creation
+		Dimension mDim = new Dimension(toppoint, bottompoint, leftpoint, rightpoint, farpoint, nearpoint);
+		
+		VertexArray va;
+		if(hasNormals && !hasTexture)
+		{
+			
+			va = new VertexArray(vertArray, normalArray, VertexArray.TRIANGLES);
+		}
+		else
+		{
+			if(hasNormals && hasTexture)
+			{
+				va = new VertexArray(vertArray, normalArray, tcArray, VertexArray.TRIANGLES);
+			}
+			 else
+			 {
+				va = new VertexArray(vertArray, VertexArray.TRIANGLES); //creates the model Vertices array
+			 }
+		}
+		
+		//read is done
+		in.close();
+		
+		Model m = new Model(name, va, baseTexture, mDim, Model.GENERICMODEL); //creates the model
+		return m;
+		
+	}

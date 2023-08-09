@@ -1,0 +1,21 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android" 
+    android:orientation="vertical"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    >
+	 <android.opengl.GLSurfaceView 
+	    android:id="@+id/glrenderer"  
+	    android:layout_width="fill_parent" 
+	    android:layout_height="fill_parent"
+	 />
+	 <RelativeLayout android:layout_width="fill_parent" android:layout_height="fill_parent" android:id="@+id/relativeLayout1">
+	     <LinearLayout android:layout_height="wrap_content" android:layout_alignParentLeft="true" android:layout_width="wrap_content" android:id="@+id/linearLayout1" android:layout_alignParentTop="true" android:orientation="horizontal">
+	         <Button android:text="pause" android:layout_height="wrap_content" android:layout_width="wrap_content" android:id="@+id/pause"></Button>
+	         <Button android:text="resume" android:layout_height="wrap_content" android:layout_width="wrap_content" android:id="@+id/resume"></Button>
+	         <Button android:text="exit" android:layout_height="wrap_content" android:layout_width="wrap_content" android:id="@+id/exit"></Button>
+	     </LinearLayout>
+	     <include android:id="@+id/include1" android:layout_alignParentLeft="true" android:layout_width="wrap_content" android:layout_alignParentBottom="true" layout="@layout/leftcontrol" android:layout_height="wrap_content"></include>
+	     <include android:id="@+id/include2" android:layout_width="wrap_content" layout="@layout/rightcontrol" android:layout_height="wrap_content" android:layout_alignTop="@+id/include1" android:layout_alignParentRight="true"></include>
+	 </RelativeLayout>
+	 
+ </FrameLayout>

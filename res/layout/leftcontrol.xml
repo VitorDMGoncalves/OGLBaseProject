@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+  xmlns:android="http://schemas.android.com/apk/res/android"
+  android:orientation="vertical"
+  android:layout_height="wrap_content" android:layout_width="wrap_content">
+    <Button android:text="D" android:layout_width="wrap_content" android:id="@+id/down" android:layout_height="wrap_content" android:layout_below="@+id/right" android:layout_alignLeft="@+id/up"></Button>
+    <Button android:text="F" android:layout_width="wrap_content" android:id="@+id/forward" android:layout_height="wrap_content" android:layout_above="@+id/left" android:layout_alignParentLeft="true"></Button>
+    <Button android:text="L" android:layout_width="wrap_content" android:id="@+id/left" android:layout_height="wrap_content" android:layout_above="@+id/back" android:layout_toRightOf="@+id/forward"></Button>
+    <Button android:text="B" android:layout_width="wrap_content" android:id="@+id/back" android:layout_height="wrap_content" android:layout_below="@+id/right" android:layout_alignParentLeft="true"></Button>
+    <Button android:text="U" android:layout_width="wrap_content" android:id="@+id/up" android:layout_height="wrap_content" android:layout_alignParentTop="true" android:layout_toRightOf="@+id/left"></Button>
+    <Button android:text="R" android:layout_width="wrap_content" android:id="@+id/right" android:layout_height="wrap_content" android:layout_below="@+id/up" android:layout_toRightOf="@+id/down"></Button>
+</RelativeLayout>
